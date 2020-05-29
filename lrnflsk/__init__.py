@@ -3,9 +3,9 @@ import os
 import logging
 
 import config_dev
-# from lrnflsk.bye import bye
-# from lrnflsk.hello import hello
-from lrnflsk.application import hello, bye
+from lrnflsk.bye import bye
+from lrnflsk.hello import hello
+
 
 def create_app(environment):
     app = Flask(__name__)
