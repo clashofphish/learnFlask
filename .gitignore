@@ -1,5 +1,5 @@
 ## Custom ignores
-zach-tests/
+logs/
 
 # Adding these since limited people using PyCharm
 .idea
@@ -8,6 +8,7 @@ zach-tests/
 ## Typical Python Ignores
 # Byte-compiled / optimized / DLL files
 __pycache__/
+lrnflsk/__pycache__/
 *.py[cod]
 *$py.class
 
