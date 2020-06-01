@@ -19,14 +19,14 @@ def goodbye_world():
     app.logger.debug('Bye world visited')
     return 'Bye World!'
 
-# @app.route('/devconfig')
-# def set_dev_config():
-#     app.config.from_object('config_dev')
-#     return {
-#         's3': str(app.config['S3_REGION']),
-#         'log': str(app.config['LOG_LEVEL']),
-#         'table': str(app.config['DB_TABLE'])
-#     }
+
+@bye.route('/config')
+def set_dev_config():
+    return {
+        's3': str(app.config['S3_REGION']),
+        'log': str(app.config['LOG_LEVEL']),
+        'table': str(app.config['DB_TABLE'])
+    }
 #
 #
 # @app.route('/json/test')

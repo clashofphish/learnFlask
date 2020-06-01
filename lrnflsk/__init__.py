@@ -1,8 +1,8 @@
-from flask import Flask, url_for
+from flask import Flask
 import os
 import logging
 
-import config_dev
+
 from lrnflsk.bye import bye
 from lrnflsk.hello import hello
 
@@ -10,15 +10,13 @@ from lrnflsk.hello import hello
 def create_app(environment):
     app = Flask(__name__)
 
-    # If dev use dev config
-    # else if prod set env variable to use prod config
+    # Always use dev config
+    app.config.from_object('config_dev')
+
+    # If prod then overwrite dev config
     if environment == 'prod':
         os.environ['LEARN_FLASK_CONFIG'] = ('/Users/zachary.smith/GitRepositories'
                                             '/nonWork/learnFlask/config_prod.py')
-    else:
-        app.config.from_object('config_dev')
-
-    # Set env variable for prod config
     if os.getenv('LEARN_FLASK_CONFIG') is not None:
         app.config.from_envvar('LEARN_FLASK_CONFIG')
 
