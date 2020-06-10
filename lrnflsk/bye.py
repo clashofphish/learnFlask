@@ -27,6 +27,12 @@ def set_dev_config():
         'log': str(app.config['LOG_LEVEL']),
         'table': str(app.config['DB_TABLE'])
     }
+
+
+@bye.route('/printbye')
+def print_bye():
+    print('Bye')
+    return 'Printed Bye'
 #
 #
 # @app.route('/json/test')
