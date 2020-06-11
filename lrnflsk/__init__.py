@@ -2,15 +2,16 @@ from flask import Flask
 import os
 import logging
 from healthcheck import HealthCheck, EnvironmentDump
-
+from threading import Thread
 
 from lrnflsk.bye import bye
 from lrnflsk.hello import hello
-from lrnflsk.queue_tasks import sqs, thread_simple_long_task
-from lrnflsk.utility_functions.sqs_utilities import sqs_create_queue
+from lrnflsk.queue_tasks import sqs
+from lrnflsk.utility_functions.sqs_utilities import sqs_queue_on_name
+from lrnflsk.long_tasks import simple_long_task
 
 
-def create_app(environment):
+def create_app():
     app = Flask(__name__)
 
     # Always use dev config
@@ -49,6 +50,20 @@ def create_app(environment):
     app.add_url_rule('/environment', 'environment', view_func=lambda: envdump.run())
 
     # Setup SQS app object
-    app.sqs = None
+    app.sqs, message = sqs_queue_on_name(app.config['SQS_NAME'])
+    app.logger.debug(message)
+
+    @app.before_first_request
+    def start_background_threads():
+        thread = Thread(
+            target=simple_long_task,
+            kwargs={'queue_resource': app.sqs}
+        )
+        thread.start()
 
     return app
+
+
+
+
+

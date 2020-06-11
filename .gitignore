@@ -1,5 +1,6 @@
 ## Custom ignores
 logs/
+trying_code/
 
 # Adding these since limited people using PyCharm
 .idea
