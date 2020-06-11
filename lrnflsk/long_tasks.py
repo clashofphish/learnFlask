@@ -5,7 +5,10 @@ import lrnflsk.utility_functions.sqs_utilities as sqs_ut
 
 def simple_long_task(queue_resource):
     while True:
+        start = time.time()
         messages = sqs_ut.sqs_pull_messages(queue_resource, max_messages=5)
+        end = time.time()
+        print('Time wait for queue response {}'.format(end - start))
         for message in messages:
             duration = int(message.body)
             # In actual code would perform a message validation

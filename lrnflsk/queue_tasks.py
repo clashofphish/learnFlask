@@ -22,7 +22,6 @@ def index():
 
 # TODO:
 #  move to multiprocess to set up a pool of threads rather than threading
-#  once this is working try using uWSGI to control the workers
 @sqs.route('/thread/duration/queue/<int:duration>', methods=['GET'])
 def add_queue_message(duration):
     response = sqs_ut.sqs_send_simple_message(

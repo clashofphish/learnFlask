@@ -17,7 +17,6 @@ def sqs_create_queue(name, wait_time: str = '2'):
 def sqs_get_queue_resource(name):
     sqs = boto3.resource('sqs')
     queue = sqs.get_queue_by_name(QueueName=name)
-    # If queue not found exception is thrown - botocore.errorfactory.QueueDoesNotExist
     return queue
 
 
@@ -31,8 +30,11 @@ def sqs_send_json_message(queue_resource, message_json):
     return response
 
 
-def sqs_pull_messages(queue_resource, max_messages=10):
-    message_bunch = queue_resource.receive_messages(MaxNumberOfMessages=max_messages)
+def sqs_pull_messages(queue_resource, max_messages=10, wait_time=5):
+    message_bunch = queue_resource.receive_messages(
+        MaxNumberOfMessages=max_messages,
+        WaitTimeSeconds=wait_time
+    )
     print('Total messages pulled: {}'.format(len(message_bunch)))
     return message_bunch
 
