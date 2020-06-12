@@ -12,7 +12,7 @@ sqs = Blueprint('sqs', __name__)
 @sqs.route('/', methods=['GET'])
 def index():
     if app.sqs is None:
-        app.sqs, message = sqs_ut.sqs_queue_on_name(app.config['SQS_NAME'])
+        app.sqs, message = sqs_ut.sqs_queue_check_get_url(app.config['SQS_NAME'])
     else:
         message = 'Queue already initialized in app'
     response_message = json.dumps({'message': message})
@@ -24,8 +24,8 @@ def index():
 #  move to multiprocess to set up a pool of threads rather than threading
 @sqs.route('/thread/duration/queue/<int:duration>', methods=['GET'])
 def add_queue_message(duration):
-    response = sqs_ut.sqs_send_simple_message(
-        queue_resource=app.sqs,
+    response = sqs_ut.sqs_clt_send_simple_message(
+        queue_url=app.sqs,
         message_body=str(duration)
     )
     if int(response['ResponseMetadata']['HTTPStatusCode']) == 200:
