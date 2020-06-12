@@ -3,6 +3,7 @@ import os
 import logging
 from healthcheck import HealthCheck, EnvironmentDump
 from threading import Thread
+# from multiprocessing import Process
 
 from lrnflsk.bye import bye
 from lrnflsk.hello import hello
@@ -56,10 +57,19 @@ def create_app():
     @app.before_first_request
     def start_background_threads():
         thread = Thread(
-            target=simple_long_task,
+            target=simple_long_task, 
             kwargs={'queue_resource': app.sqs}
         )
         thread.start()
+
+    # @app.before_first_request
+    # def start_background_threads():
+    #     process = Process(
+    #         target=simple_long_task,
+    #         args=(app.sqs, )
+    #     )
+    #     process.daemon = True
+    #     process.start()
 
     return app
 
