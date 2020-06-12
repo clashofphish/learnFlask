@@ -57,7 +57,7 @@ def create_app():
     @app.before_first_request
     def start_background_threads():
         thread = Thread(
-            target=simple_long_task, 
+            target=simple_long_task,
             kwargs={'queue_resource': app.sqs}
         )
         thread.start()
