@@ -11,8 +11,22 @@ from lrnflsk.utility_functions.sqs_utilities import sqs_queue_check_get_url
 from lrnflsk.long_tasks import simple_long_task
 
 
+class FlaskApp(Flask):
+    def __init__(self, *args, **kwargs):
+        super(FlaskApp, self).__init__(*args, **kwargs)
+
+    @staticmethod
+    def activate_background_job(queue_url):
+        process = Process(
+            target=simple_long_task,
+            args=(queue_url,)
+        )
+        process.daemon = True
+        process.start()
+
+
 def create_app():
-    app = Flask(__name__)
+    app = FlaskApp(__name__)
 
     # Always use dev config
     app.config.from_object('config_dev')
@@ -53,14 +67,8 @@ def create_app():
     app.sqs, message = sqs_queue_check_get_url(app.config['SQS_NAME'])
     app.logger.debug(message)
 
-    @app.before_first_request
-    def start_background_process():
-        process = Process(
-            target=simple_long_task,
-            args=(app.sqs, )
-        )
-        process.daemon = True
-        process.start()
+    # Start the multiprocess process
+    app.activate_background_job(app.sqs)
 
     return app
 
