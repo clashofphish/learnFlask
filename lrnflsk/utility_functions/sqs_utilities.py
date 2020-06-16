@@ -65,7 +65,6 @@ def sqs_queue_check_get_url(queue_name: str):
         queue = sqs_create_queue(queue_name)
         return queue.url, 'Queue created with name = {}'.format(queue_name)
         # use resource to get url need queue.url
-    pass
 
 
 def sqs_clt_send_simple_message(queue_url: str, message_body: str):

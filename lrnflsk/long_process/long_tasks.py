@@ -1,6 +1,18 @@
 import time
+from flask import current_app
+# from lrnflsk import celery
 
 import lrnflsk.utility_functions.sqs_utilities as sqs_ut
+
+
+# @celery.task
+def celery_long_task(duration):
+    current_app.app_context().push()
+    for i in range(duration):
+        print("Working... {}/{}".format(i + 1, duration))
+        time.sleep(2)
+        if i == duration - 1:
+            print('Completed work on {}'.format(duration))
 
 
 def simple_long_task(queue_address):

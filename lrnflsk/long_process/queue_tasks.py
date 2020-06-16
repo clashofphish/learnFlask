@@ -5,6 +5,9 @@ import json
 # import time
 
 import lrnflsk.utility_functions.sqs_utilities as sqs_ut
+from lrnflsk.long_process.long_tasks import celery_long_task
+# import lrnflsk.long_tasks as lt
+
 
 sqs = Blueprint('sqs', __name__)
 
@@ -15,13 +18,14 @@ def index():
         app.sqs, message = sqs_ut.sqs_queue_check_get_url(app.config['SQS_NAME'])
     else:
         message = 'Queue already initialized in app'
-    response_message = json.dumps({'message': message})
+    response_message = json.dumps({
+        'message': message,
+        'url': app.sqs
+    })
 
     return Response(response_message, status=200, mimetype='application/json')
 
 
-# TODO:
-#  move to multiprocess to set up a pool of threads rather than threading
 @sqs.route('/thread/duration/queue/<int:duration>', methods=['GET'])
 def add_queue_message(duration):
     response = sqs_ut.sqs_clt_send_simple_message(
@@ -42,3 +46,6 @@ def add_queue_message(duration):
     return Response(response_message, status=200, mimetype='application/json')
 
 
+@sqs.route('/celery/<int:duration>', methods=['GET'])
+def add_celery_task(duration):
+    celery_long_task.delay(duration)
