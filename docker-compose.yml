@@ -6,6 +6,7 @@ services:
       context: .
       args:
         blduser: notused
+    # no user here because no need to run as something other than root user
     command: [flask, run, --host=0.0.0.0]
     ports:
       - 8000:5000
@@ -15,5 +16,6 @@ services:
       context: .
       args:
         blduser: celeryworker
-    user: celeryworker
+    # sets the user of the container - removes RuntimeWarning for Celery
+    user: celeryworker  #  user must match blduser arg
     command: [celery, worker, --app=lrnflsk.celery_worker.celery, --concurrency=1]
