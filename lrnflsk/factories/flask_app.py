@@ -19,7 +19,7 @@ def create_app():
         app.config.from_envvar('LEARN_FLASK_CONFIG')
 
     # Set logging
-    log_file = app.config['LOG_LOC'] + '/lrnflsk.log'
+    log_file = app.config['LOG_LOC'] + app.config['LOG_FILE']
     logging.basicConfig(
         level=app.config['LOG_LEVEL'],
         format=('%(levelname)s %(asctime)s %(name)s '

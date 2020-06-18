@@ -5,7 +5,8 @@ DB_TABLE = 'dev-table'
 SQS_NAME = 'ZS-test'
 
 LOG_LEVEL = logging.INFO
-LOG_LOC = '/Users/zachary.smith/GitRepositories/nonWork/learnFlask/logs'
+LOG_LOC = '/Users/zachary.smith/GitRepositories/nonWork/learnFlask/logs/'
+LOG_FILE = 'lrnflsk.log'
 
 # Celery configuration
 BROKER_URL = 'sqs://'  # https://queue.amazonaws.com/318689803902/ZS-test

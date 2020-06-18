@@ -1,0 +1,19 @@
+version: "3.3"
+
+services:
+  web:
+    build:
+      context: .
+      args:
+        blduser: notused
+    command: [flask, run, --host=0.0.0.0]
+    ports:
+      - 8000:5000
+
+  worker:
+    build:
+      context: .
+      args:
+        blduser: celeryworker
+    user: celeryworker
+    command: [celery, worker, --app=lrnflsk.celery_worker.celery, --concurrency=1]
