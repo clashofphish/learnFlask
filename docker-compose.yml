@@ -16,6 +16,10 @@ services:
       context: .
       args:
         blduser: celeryworker
-    # sets the user of the container - removes RuntimeWarning for Celery
+    # user below sets the user of the container - removes RuntimeWarning for Celery
     user: celeryworker  #  user must match blduser arg
     command: [celery, worker, --app=lrnflsk.celery_worker.celery, --concurrency=1]
+    # volumes below allows the developer to pass AWS credentials for local development
+    #  before container is moved to a server that sits behind IAM roles
+    volumes:
+      - ~/.aws/credentials:/home/celeryworker/.aws/credentials:ro
