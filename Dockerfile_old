@@ -1,8 +1,7 @@
 FROM centos:8.1.1911
+#7.8.2003
 
 EXPOSE 5000
-
-ENV LANG=C.UTF-8 LC_ALL=C.UTF-8
 
 ARG blduser
 ENV C_USER=$blduser
@@ -14,8 +13,10 @@ ENV LANG=en_US.utf-8
 ENV LEARN_FLASK_CONFIG=/lrnflsk/config_prod.py
 ENV PYCURL_SSL_LIBRARY=openssl
 
-RUN dnf install -y python36 python36-devel
-RUN dnf install -y libcurl-devel gcc openssl-devel
+RUN yum install -y https://repo.ius.io/ius-release-el7.rpm
+RUN yum update -y curl
+RUN yum install -y python36u python36u-libs python36u-devel python36u-pip python3-setuptools
+RUN yum install -y libcurl-devel gcc openssl-devel
 
 # curl-devel
 # Add user for Celery to not have a super user
