@@ -6,20 +6,24 @@ services:
       context: .
       args:
         blduser: notused
-    image: &lrnflsk_app lrnflsk_app
+    image: application
     # no user here because no need to run as something other than root user
     command: [flask, run, --host=0.0.0.0]
     ports:
       - 8000:5000
+    # volumes below allows the developer to pass AWS credentials for local development
+    #  before container is moved to a server that sits behind IAM roles
+    volumes:
+      - ~/.aws/credentials:/home/celeryworker/.aws/credentials:ro
 
   worker:
     build:
       context: .
       args:
         blduser: celeryworker
-    image: *lrnflsk_app
+    image: worker
     # user below sets the user of the container - removes RuntimeWarning for Celery
-    user: celeryworker  #  user must match blduser arg
+    user: celeryworker
     command: [celery, worker, --app=lrnflsk.celery_worker.celery, --concurrency=1, --loglevel=info]
     # volumes below allows the developer to pass AWS credentials for local development
     #  before container is moved to a server that sits behind IAM roles

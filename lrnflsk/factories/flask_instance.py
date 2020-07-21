@@ -3,12 +3,12 @@ import os
 import logging
 from healthcheck import HealthCheck, EnvironmentDump
 
-from lrnflsk.hello_bye.bye import bye
-from lrnflsk.hello_bye.hello import hello
-from lrnflsk.long_process.queue_tasks import sqs
+from lrnflsk.blueprints.bye import bye
+from lrnflsk.blueprints.hello import hello
+from lrnflsk.blueprints.queue_tasks import sqs
 
 
-def create_app():
+def create_app() -> Flask:
     app = Flask(__name__)
 
     # Always use dev config

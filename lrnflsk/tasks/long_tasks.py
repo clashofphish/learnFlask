@@ -1,6 +1,6 @@
 """This file holds the celery tasks"""
 import time
-from lrnflsk.extensions import celery
+from lrnflsk.celery_holder import celery
 
 
 @celery.task
